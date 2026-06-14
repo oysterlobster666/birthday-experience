@@ -194,7 +194,7 @@ const personalities = {
     en: "The Material Alchemist",
     cn: "材料炼金师",
     symbol: "A",
-    poster: "./assets/personas/final-posters/material.jpg",
+    poster: "./assets/personas/final-posters/material.jpg?v=2",
     quoteCn: "艺术家并非特殊的人，而是能让寻常之物变得特别的普通人。",
     quoteEn: "AN ARTIST IS AN ORDINARY PERSON WHO CAN TAKE ORDINARY THINGS AND MAKE THEM SPECIAL.",
     quoteAuthor: "RUTH ASAWA",
@@ -640,6 +640,30 @@ function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 10) {
   return y + lines * lineHeight;
 }
 
+function wrapCanvasWords(ctx, text, x, y, maxWidth, lineHeight, maxLines = 10) {
+  const words = text.split(/\s+/);
+  let line = "";
+  let lines = 0;
+
+  words.forEach((word) => {
+    if (lines >= maxLines) return;
+    const test = line ? `${line} ${word}` : word;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      ctx.fillText(line, x, y + lines * lineHeight);
+      line = word;
+      lines += 1;
+    } else {
+      line = test;
+    }
+  });
+
+  if (line && lines < maxLines) {
+    ctx.fillText(line, x, y + lines * lineHeight);
+    lines += 1;
+  }
+  return y + lines * lineHeight;
+}
+
 function canvasSectionLabel(ctx, text, x, y) {
   ctx.fillStyle = "#b88250";
   ctx.font = "24px Georgia, serif";
@@ -657,27 +681,14 @@ function canvasSectionRule(ctx, y) {
   ctx.stroke();
 }
 
-function drawImageCover(ctx, image, x, y, width, height, radius = 32) {
-  const imageRatio = image.naturalWidth / image.naturalHeight;
-  const targetRatio = width / height;
-  let sourceWidth = image.naturalWidth;
-  let sourceHeight = image.naturalHeight;
-  let sourceX = 0;
-  let sourceY = 0;
-
-  if (imageRatio > targetRatio) {
-    sourceWidth = image.naturalHeight * targetRatio;
-    sourceX = (image.naturalWidth - sourceWidth) / 2;
-  } else {
-    sourceHeight = image.naturalWidth / targetRatio;
-    sourceY = (image.naturalHeight - sourceHeight) / 2;
-  }
-
+function drawImageContained(ctx, image, x, y, width, radius = 32) {
+  const height = Math.round(width * (image.naturalHeight / image.naturalWidth));
   ctx.save();
   roundRect(ctx, x, y, width, height, radius);
   ctx.clip();
-  ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+  ctx.drawImage(image, x, y, width, height);
   ctx.restore();
+  return height;
 }
 
 async function drawLongPortrait() {
@@ -693,7 +704,7 @@ async function drawLongPortrait() {
   });
 
   canvas.width = 1080;
-  canvas.height = recommendation.type === "schedule" ? 4720 : 4480;
+  canvas.height = 6500;
 
   const gradient = ctx.createLinearGradient(0, 0, 1080, canvas.height);
   gradient.addColorStop(0, "#eef0e5");
@@ -721,8 +732,8 @@ async function drawLongPortrait() {
   ctx.fillText(`${direction} · TO LINDSEY`, 960, 132);
   ctx.textAlign = "left";
 
-  drawImageCover(ctx, image, 120, 190, 840, 1120, 30);
-  let nextY = 1395;
+  const posterHeight = drawImageContained(ctx, image, 120, 190, 840, 30);
+  let nextY = 190 + posterHeight + 85;
   canvasSectionRule(ctx, nextY);
 
   nextY += 74;
@@ -786,7 +797,7 @@ async function drawLongPortrait() {
   nextY += 18;
   ctx.fillStyle = "#4e675e";
   ctx.font = "italic 25px Georgia, serif";
-  nextY = wrapCanvasText(ctx, `“${personality.quoteEn}”`, 120, nextY, 840, 40, 5);
+  nextY = wrapCanvasWords(ctx, `“${personality.quoteEn}”`, 120, nextY, 840, 40, 5);
   nextY += 18;
   ctx.fillStyle = "#b88250";
   ctx.font = "21px Georgia, serif";
