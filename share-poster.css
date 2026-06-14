@@ -32,9 +32,19 @@ body {
   overflow: hidden;
   padding: 72px 84px 66px;
   background:
-    radial-gradient(circle at 12% 4%, rgba(255, 252, 233, 0.96), transparent 32%),
-    radial-gradient(circle at 90% 82%, rgba(103, 138, 116, 0.4), transparent 34%),
     linear-gradient(155deg, #f1eee1 0%, #d6dfd5 60%, #aac0ae 100%);
+}
+
+.poster::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(244, 239, 226, 0.32) 0%, rgba(238, 242, 232, 0.58) 49%, rgba(205, 220, 208, 0.74) 100%),
+    linear-gradient(90deg, rgba(244, 239, 226, 0.5), transparent 64%),
+    url("./assets/share/water-reflection-background.png") center / cover no-repeat;
+  content: "";
+  opacity: 0.74;
+  filter: saturate(0.72);
 }
 
 .poster::after {
@@ -65,6 +75,7 @@ body {
   right: -330px;
   width: 780px;
   height: 780px;
+  opacity: 0.55;
 }
 
 .rings-top::before {
@@ -80,6 +91,7 @@ body {
   left: -390px;
   width: 880px;
   height: 880px;
+  opacity: 0.45;
 }
 
 .rings-bottom::before {
@@ -103,19 +115,24 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: Georgia, serif;
-  letter-spacing: 0.18em;
+  padding: 11px 15px;
+  border-radius: 999px;
+  background: rgba(255, 253, 247, 0.34);
+  letter-spacing: 0.12em;
 }
 
 .poster-header p {
   margin: 0;
   color: var(--gold);
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .poster-header span {
   color: var(--soft);
-  font-size: 17px;
+  font-family: Georgia, serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
 }
 
 .poster-title {
@@ -131,7 +148,7 @@ footer {
   height: 190px;
   place-items: center;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 248, 222, 0.9), rgba(180, 202, 183, 0.42) 58%, transparent 73%);
+  background: radial-gradient(circle, rgba(255, 248, 222, 0.76), rgba(180, 202, 183, 0.36) 58%, transparent 73%);
 }
 
 .window-mark::before,
@@ -178,62 +195,65 @@ h1 {
 }
 
 .intro {
-  max-width: 650px;
+  width: 100%;
+  max-width: none;
   margin: 32px 0 0;
   color: var(--soft);
-  font-size: 25px;
-  letter-spacing: 0.08em;
+  font-size: 22px;
+  letter-spacing: 0.055em;
   line-height: 1.85;
+  white-space: nowrap;
+}
+
+.recipient {
+  display: inline-block;
+  margin: 30px 0 0;
+  padding: 10px 21px;
+  border: 1px solid rgba(184, 130, 80, 0.34);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 253, 247, 0.35);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
 }
 
 .journey {
   display: grid;
-  grid-template-columns: 1fr 26px 1fr 26px 1fr;
-  gap: 12px;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr;
+  gap: 24px;
   align-items: center;
-  margin-top: 68px;
-  padding: 34px 36px;
+  margin-top: 48px;
+  padding: 27px 34px;
   border: 1px solid rgba(54, 95, 80, 0.14);
   border-radius: 28px;
   background: rgba(255, 253, 247, 0.45);
 }
 
-.journey article {
+.journey p {
   display: grid;
-  grid-template-columns: auto 58px;
-  gap: 7px 12px;
-  align-items: center;
-}
-
-.journey span {
-  color: var(--gold);
-  font-family: Georgia, serif;
-  font-size: 16px;
-  letter-spacing: 0.1em;
-}
-
-.journey svg {
-  grid-row: span 2;
-  width: 54px;
-  fill: none;
-  stroke: var(--leaf);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-}
-
-.journey strong {
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  gap: 6px;
+  margin: 0;
+  text-align: center;
 }
 
 .journey i {
+  width: 1px;
+  height: 42px;
+  background: rgba(54, 95, 80, 0.16);
+}
+
+.journey strong {
   color: var(--gold);
   font-family: Georgia, serif;
-  font-size: 22px;
-  font-style: normal;
-  text-align: center;
+  font-size: 31px;
+  font-weight: 400;
+}
+
+.journey span {
+  color: var(--ink);
+  font-size: 16px;
+  letter-spacing: 0.08em;
 }
 
 .scan {
@@ -244,7 +264,7 @@ h1 {
   margin-top: 62px;
   padding: 38px 46px;
   border-radius: 32px;
-  background: rgba(255, 253, 247, 0.78);
+  background: rgba(255, 253, 247, 0.88);
   box-shadow: 0 24px 70px rgba(18, 43, 35, 0.13);
 }
 
@@ -273,7 +293,7 @@ h1 {
 
 .scan-copy h2 {
   margin: 0;
-  font-size: 48px;
+  font-size: 39px;
   font-weight: 500;
   letter-spacing: 0.08em;
   line-height: 1.45;
@@ -282,9 +302,10 @@ h1 {
 .scan-copy span {
   display: block;
   margin-top: 20px;
-  color: var(--soft);
-  font-size: 18px;
-  letter-spacing: 0.06em;
+  color: var(--gold);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
 }
 
 footer {
@@ -293,6 +314,7 @@ footer {
   justify-content: space-between;
   margin-top: auto;
   padding-top: 52px;
+  text-shadow: 0 1px 10px rgba(255, 253, 247, 0.75);
 }
 
 footer p,
@@ -302,8 +324,9 @@ footer span {
 
 footer p {
   color: var(--gold);
+  font-family: Georgia, serif;
   font-size: 18px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
 }
 
 footer span {
