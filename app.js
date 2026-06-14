@@ -133,6 +133,54 @@ const activities = {
   },
 };
 
+const recommendationPools = {
+  quiet: ["花道", "香道", "国画"],
+  repair: ["古籍／文物修复", "篆刻", "刺绣"],
+  earth: ["陶艺", "国画", "木工"],
+  heritage: ["蓝染", "掐丝珐琅", "篆刻", "刺绣", "制香", "画唐卡"],
+  material: ["吹玻璃", "金工／银饰", "木工", "皮具", "Tufting", "陶艺体验"],
+  brave: ["拳击", "健身"],
+  poet: ["普拉提", "国标舞"],
+};
+
+const wonderCombinations = {
+  play: {
+    title: "轻盈色彩漫游",
+    items: ["拼豆", "蓝染", "Tufting", "刺绣"],
+  },
+  fire: {
+    title: "火光与材料实验",
+    items: ["吹玻璃", "金工／银饰", "掐丝珐琅", "制香"],
+  },
+  build: {
+    title: "双手建造计划",
+    items: ["木工", "皮具", "银饰", "Tufting"],
+  },
+  heritage: {
+    title: "古老技艺采集",
+    items: ["蓝染", "篆刻", "刺绣", "掐丝珐琅"],
+  },
+  cross: {
+    title: "跨界好奇组合",
+    items: ["吹玻璃", "蓝染", "皮具", "拼豆"],
+  },
+};
+
+const roamPersonaCombinations = {
+  heritage: {
+    heritage: ["蓝染", "篆刻", "刺绣", "画唐卡"],
+    fire: ["掐丝珐琅", "制香", "蓝染", "篆刻"],
+    build: ["篆刻", "刺绣", "掐丝珐琅", "蓝染"],
+    play: ["蓝染", "刺绣", "掐丝珐琅", "画唐卡"],
+  },
+  material: {
+    heritage: ["陶艺体验", "金工／银饰", "木工", "皮具"],
+    fire: ["吹玻璃", "金工／银饰", "陶艺体验", "Tufting"],
+    build: ["木工", "皮具", "金工／银饰", "Tufting"],
+    play: ["Tufting", "吹玻璃", "皮具", "陶艺体验"],
+  },
+};
+
 const personalities = {
   quiet: {
     en: "The Quiet Cultivator",
@@ -463,6 +511,7 @@ function choosePersonality(direction, scores) {
 
   if (direction === "ROAM") {
     const tag = highestKey(scores.tag, ["heritage", "fire", "build", "play"]);
+    if (scores.motive.explore >= scores.motive.shape) return "wonder";
     if (tag === "heritage") return "heritage";
     if (tag === "fire" || tag === "build") return "material";
     return "wonder";
@@ -475,35 +524,85 @@ function choosePersonality(direction, scores) {
 }
 
 function chooseRecommendation(direction, scores, personalityKey) {
-  if (direction === "ROOT") {
-    const tag = highestKey(scores.tag, ["living", "ritual", "ink", "repair", "form"]);
-    return { type: "single", title: activities.root[tag][0], reason: activities.root[tag][1] };
+  if (personalityKey === "quiet") {
+    return {
+      type: "ranked",
+      title: "优先推荐：花道",
+      reason: "花道最贴近你对季节、观察与温柔秩序的感受。香道与国画同样适合成为持续练习的入口，可以在气味、留白与日常仪式中，继续寻找让自己安静生长的方式。",
+      items: recommendationPools.quiet,
+      itemLabel: "推荐顺序",
+    };
   }
 
-  if (direction === "RISE") {
-    const tag = highestKey(scores.tag, ["strike", "align", "rhythm", "power"]);
-    return { type: "single", title: activities.rise[tag][0], reason: activities.rise[tag][1] };
+  if (personalityKey === "repair") {
+    return {
+      type: "ranked",
+      title: "优先推荐：古籍／文物修复",
+      reason: "你适合在需要耐心、理解与精细判断的技艺里建立深层连接。篆刻与刺绣也能让你通过缓慢而专注的动作，回应时间留下的痕迹。",
+      items: recommendationPools.repair,
+      itemLabel: "适合继续讨论",
+    };
+  }
+
+  if (personalityKey === "earth") {
+    return {
+      type: "ranked",
+      title: "优先推荐：陶艺",
+      reason: "陶艺最能回应你对反复塑造、触摸材料与留下作品的需要。国画与木工则提供了不同的形塑方式，也值得作为后续深入方向。",
+      items: recommendationPools.earth,
+      itemLabel: "适合继续讨论",
+    };
+  }
+
+  if (personalityKey === "brave") {
+    const items = scores.tag.strike >= scores.tag.power ? ["拳击", "健身"] : ["健身", "拳击"];
+    return {
+      type: "ranked",
+      title: `优先推荐：${items[0]}`,
+      reason: "清晰的目标、身体反馈与持续突破，会让你真实感受到自己的力量正在增长。这两个方向都适合继续深入学习。",
+      items,
+      itemLabel: "推荐顺序",
+    };
+  }
+
+  if (personalityKey === "poet") {
+    const items = scores.tag.rhythm > scores.tag.align ? ["国标舞", "普拉提"] : ["普拉提", "国标舞"];
+    return {
+      type: "ranked",
+      title: `优先推荐：${items[0]}`,
+      reason: "你适合通过呼吸、控制与节奏重新认识身体。两种体验分别回应稳定与表达，也都值得成为长期学习方向。",
+      items,
+      itemLabel: "推荐顺序",
+    };
   }
 
   const rankedTags = ["heritage", "fire", "build", "play"].sort((a, b) => scores.tag[b] - scores.tag[a]);
-  const selected = [];
-  rankedTags.forEach((tag) => {
-    activities.roam[tag].forEach((item) => {
-      if (!selected.includes(item) && selected.length < 4) selected.push(item);
-    });
-  });
 
-  const roamTitles = {
-    heritage: "传统纹样与手艺探索",
-    material: "材料转化与创造探索",
-    wonder: "跨界好奇心探索",
-  };
+  if (personalityKey === "wonder") {
+    const highest = scores.tag[rankedTags[0]];
+    const second = scores.tag[rankedTags[1]];
+    const comboKey = highest - second <= 1 ? "cross" : rankedTags[0];
+    const combo = wonderCombinations[comboKey];
+    return {
+      type: "schedule",
+      title: combo.title,
+      reason: "你的好奇并不只通向一种答案。这组体验根据你本次作答中最鲜明的兴趣入口生成，也保留了跨类别的反差；重新测试时，你可能会采集到另一条路线。",
+      items: combo.items,
+      itemLabel: "本次探索组合",
+    };
+  }
+
+  const selected = roamPersonaCombinations[personalityKey][rankedTags[0]];
+  const fullPool = recommendationPools[personalityKey];
+  const moreItems = fullPool.filter((item) => !selected.includes(item));
 
   return {
     type: "schedule",
-    title: roamTitles[personalityKey],
+    title: personalityKey === "heritage" ? "传统纹样与手艺探索" : "材料转化与创造探索",
     reason: "这些体验回应了你最鲜明的兴趣入口，也刻意保留了一点反差与未知。你可以在不同材料、技艺和感受之间穿行，从真实体验中发现值得继续深入的方向。",
     items: selected,
+    moreItems,
+    itemLabel: "本次精选组合",
   };
 }
 
@@ -540,13 +639,13 @@ function renderResult() {
         <div class="recommendation-box">
           <strong>${recommendation.title}</strong>
           <p>${recommendation.reason}</p>
-          ${
-            recommendation.type === "schedule"
-              ? `<ol class="schedule">${recommendation.items
-                  .map((item, index) => `<li><span>0${index + 1}</span>${item}</li>`)
-                  .join("")}</ol>`
-              : ""
-          }
+          <p class="recommendation-label">${recommendation.itemLabel}</p>
+          <ol class="schedule">${recommendation.items
+            .map((item, index) => `<li><span>0${index + 1}</span>${item}</li>`)
+            .join("")}</ol>
+          ${recommendation.moreItems?.length
+            ? `<div class="more-directions"><span>其他适合继续讨论的方向</span><p>${recommendation.moreItems.join(" · ")}</p></div>`
+            : ""}
         </div>
       </section>
 
@@ -773,17 +872,30 @@ async function drawLongPortrait() {
   ctx.font = "29px serif";
   nextY = wrapCanvasText(ctx, recommendation.reason, 120, nextY, 840, 48, 8);
 
-  if (recommendation.type === "schedule") {
-    nextY += 30;
-    recommendation.items.forEach((item, index) => {
-      ctx.fillStyle = "#b88250";
-      ctx.font = "22px Georgia, serif";
-      ctx.fillText(`0${index + 1}`, 120, nextY);
-      ctx.fillStyle = "#183129";
-      ctx.font = "31px serif";
-      ctx.fillText(item, 205, nextY);
-      nextY += 58;
-    });
+  nextY += 30;
+  ctx.fillStyle = "#b88250";
+  ctx.font = "21px serif";
+  ctx.fillText(recommendation.itemLabel, 120, nextY);
+  nextY += 52;
+  recommendation.items.forEach((item, index) => {
+    ctx.fillStyle = "#b88250";
+    ctx.font = "22px Georgia, serif";
+    ctx.fillText(`0${index + 1}`, 120, nextY);
+    ctx.fillStyle = "#183129";
+    ctx.font = "31px serif";
+    ctx.fillText(item, 205, nextY);
+    nextY += 58;
+  });
+
+  if (recommendation.moreItems?.length) {
+    nextY += 16;
+    ctx.fillStyle = "#b88250";
+    ctx.font = "21px serif";
+    ctx.fillText("其他适合继续讨论的方向", 120, nextY);
+    nextY += 50;
+    ctx.fillStyle = "#4e675e";
+    ctx.font = "28px serif";
+    nextY = wrapCanvasText(ctx, recommendation.moreItems.join(" · "), 120, nextY, 840, 44, 3);
   }
 
   nextY += 54;
