@@ -2,111 +2,111 @@ const questions = [
   {
     title: "如果新的一岁是一座花园，你最想让它发生什么变化？",
     options: [
-      ["认真照料一种植物，看它缓慢生长", "ROOT", "quiet", "living"],
-      ["收集来自不同地方的种子，让花园充满未知", "ROAM", "explore", "play"],
-      ["让树干变得更坚韧，足以迎接风雨", "RISE", "brave", "power"],
-      ["修复一个被遗忘的角落，让旧事物重新发光", "ROOT", "repair", "repair"],
+      ["认真照料一种植物，看它缓慢生长", "ROOT", "quiet", "living", "quiet"],
+      ["收集来自不同地方的种子，让花园充满未知", "ROAM", "explore", "play", "wonder"],
+      ["让树干变得更坚韧，足以迎接风雨", "RISE", "brave", "power", "brave"],
+      ["修复一个被遗忘的角落，让旧事物重新发光", "ROOT", "repair", "repair", "repair"],
     ],
   },
   {
     title: "一个完全属于你的下午，哪种节奏最吸引你？",
     options: [
-      ["重复练习一件简单的事，直到进入忘我的状态", "ROOT", "quiet", "ritual"],
-      ["沿着地图拜访几处从未去过的地方", "ROAM", "explore", "play"],
-      ["为自己设定一个小目标，并认真完成它", "RISE", "brave", "power"],
-      ["从零开始，创造一件此前不存在的东西", "ROAM", "shape", "build"],
+      ["重复练习一门手上技艺，直到进入忘我的状态", "ROOT", "shape", "form", "earth"],
+      ["沿着地图拜访几间旧工坊，认识流传至今的技艺", "ROAM", "shape", "heritage", "heritage"],
+      ["为自己设定一个小目标，并认真完成它", "RISE", "brave", "power", "brave"],
+      ["从零开始，创造一件此前不存在的东西", "ROAM", "shape", "build", "material"],
     ],
   },
   {
     title: "未来的自己准备送你一件礼物，你希望是什么？",
     options: [
-      ["一件保留着手作痕迹、能够长久陪伴的物品", "ROOT", "shape", "form"],
-      ["一个更加稳定、有力量感的身体", "RISE", "brave", "power"],
-      ["一种能够让内心重新安静下来的方法", "ROOT", "quiet", "ritual"],
-      ["一本装满「人生第一次」的相册", "ROAM", "explore", "play"],
+      ["一件保留着手作痕迹、能够长久陪伴的物品", "ROOT", "shape", "form", "earth"],
+      ["一个更加稳定、有力量感的身体", "RISE", "brave", "power", "brave"],
+      ["一种能够让内心重新安静下来的方法", "ROOT", "quiet", "ritual", "quiet"],
+      ["一盒能让你探索不同质地与变化的材料", "ROAM", "shape", "build", "material"],
     ],
   },
   {
     title: "走进一座安静的旧房子，什么最先吸引你？",
     options: [
-      ["光影、植物与空间形成的微妙秩序", "ROOT", "quiet", "living"],
-      ["留有岁月痕迹、等待被修复的旧物", "ROOT", "repair", "repair"],
-      ["木材、织物与不同表面带来的触感", "ROAM", "shape", "build"],
-      ["一片可以随着音乐自由移动的空地", "RISE", "express", "rhythm"],
+      ["光影、植物与空间形成的微妙秩序", "ROOT", "quiet", "living", "quiet"],
+      ["留有岁月痕迹、等待被修复的旧物", "ROOT", "repair", "repair", "repair"],
+      ["木材、织物与不同表面带来的触感", "ROAM", "shape", "build", "material"],
+      ["一片可以随着音乐自由移动的空地", "RISE", "express", "rhythm", "poet"],
     ],
   },
   {
     title: "哪种挑战最容易让你产生成就感？",
     options: [
-      ["用耐心完成一件精细、不能着急的事", "ROOT", "repair", "repair"],
-      ["快速进入陌生世界，并发现新的兴趣", "ROAM", "explore", "heritage"],
-      ["突破一次身体上的害怕或极限", "RISE", "brave", "strike"],
-      ["不借助语言，也能准确表达自己", "RISE", "express", "rhythm"],
+      ["用耐心完成一件精细、不能着急的事", "ROOT", "repair", "repair", "repair"],
+      ["走进一门陌生的古老技艺，理解它的来处", "ROAM", "shape", "heritage", "heritage"],
+      ["把抽象想法反复塑造成真实的作品", "ROOT", "shape", "form", "earth"],
+      ["不借助语言，也能准确表达自己", "RISE", "express", "rhythm", "poet"],
     ],
   },
   {
     title: "如果要记录这个夏天，你更愿意留下什么？",
     options: [
-      ["一件经过多次打磨、逐渐完整的作品", "ROOT", "shape", "form"],
-      ["一组来自不同周末的小物与故事", "ROAM", "explore", "play"],
-      ["一条记录身体能力变化的成长曲线", "RISE", "brave", "power"],
-      ["一种只要再次闻到，就能回到夏天的气味", "ROOT", "quiet", "ritual"],
+      ["一件经过多次打磨、逐渐完整的作品", "ROOT", "shape", "form", "earth"],
+      ["一组来自不同周末的小物与故事", "ROAM", "explore", "play", "wonder"],
+      ["一段记录身体与节奏越来越协调的影像", "RISE", "express", "align", "poet"],
+      ["一种由古老香方留住的夏日气味", "ROAM", "shape", "heritage", "heritage"],
     ],
   },
   {
     title: "当生活有些混乱时，哪种方式最能帮助你重新找回自己？",
     options: [
-      ["整理空间，观察季节与细微变化", "ROOT", "quiet", "living"],
-      ["用双手接触材料，专注于眼前的创造", "ROAM", "shape", "fire"],
-      ["让身体充分发力，痛快地流一次汗", "RISE", "brave", "strike"],
-      ["跟随音乐和节奏，让身体自然移动", "RISE", "express", "rhythm"],
+      ["整理空间，观察季节与细微变化", "ROOT", "quiet", "living", "quiet"],
+      ["用双手接触材料，专注于眼前的创造", "ROAM", "shape", "fire", "material"],
+      ["让身体充分发力，痛快地流一次汗", "RISE", "brave", "strike", "brave"],
+      ["跟随音乐和节奏，让身体自然移动", "RISE", "express", "rhythm", "poet"],
     ],
   },
   {
     title: "你最希望朋友用哪个词形容新一岁的你？",
     options: [
-      ["沉静而有深度", "ROOT", "quiet", "ink"],
-      ["好奇而不设边界", "ROAM", "explore", "play"],
-      ["勇敢而有力量", "RISE", "brave", "strike"],
-      ["灵巧而富有创造力", "ROAM", "shape", "heritage"],
+      ["沉静而有深度", "ROOT", "quiet", "ink", "quiet"],
+      ["好奇而不设边界", "ROAM", "explore", "play", "wonder"],
+      ["勇敢而有力量", "RISE", "brave", "strike", "brave"],
+      ["灵巧而富有创造力", "ROAM", "shape", "heritage", "heritage"],
     ],
   },
   {
     title: "你更向往哪种学习关系？",
     options: [
-      ["与同一位老师和一群伙伴慢慢深入", "ROOT", "quiet", "ink"],
-      ["在不同人的带领下，不断打开新世界", "ROAM", "explore", "play"],
-      ["获得清晰反馈，一步步接近目标", "RISE", "brave", "align"],
-      ["与同样喜欢创造的人交换灵感", "ROAM", "shape", "heritage"],
+      ["跟随一位老师，理解一门技艺漫长的来处", "ROOT", "repair", "repair", "repair"],
+      ["在不同人的带领下，不断打开新世界", "ROAM", "explore", "play", "wonder"],
+      ["获得清晰反馈，一步步找到更协调的动作", "RISE", "express", "align", "poet"],
+      ["与同样喜欢创造的人交换灵感", "ROAM", "shape", "heritage", "heritage"],
     ],
   },
   {
     title: "面对暂时无法完成的事情，你通常更愿意怎么做？",
     options: [
-      ["理解它的来历，耐心修复问题", "ROOT", "repair", "repair"],
-      ["先尝试不同路径，再决定继续哪一条", "ROAM", "explore", "play"],
-      ["持续训练，直到自己拥有解决它的能力", "RISE", "brave", "power"],
-      ["改变规则，用自己的方式重新表达", "ROAM", "shape", "fire"],
+      ["理解它的来历，耐心修复问题", "ROOT", "repair", "repair", "repair"],
+      ["先做出一个版本，再在尝试中不断修正", "ROOT", "shape", "form", "earth"],
+      ["持续训练，直到自己拥有解决它的能力", "RISE", "brave", "power", "brave"],
+      ["改变规则，用自己的方式继续探索", "ROAM", "explore", "play", "wonder"],
     ],
   },
   {
     title: "哪组感受最令你着迷？",
     tagWeight: 3,
     options: [
-      ["光影、留白与恰到好处的平衡", "ROOT", "quiet", "ink"],
-      ["气味、呼吸与安静流动的时间", "ROOT", "quiet", "ritual"],
-      ["温度、碰撞与材料发生变化的瞬间", "ROAM", "shape", "fire"],
-      ["纹理、结构与零件逐渐组合完整", "ROAM", "shape", "build"],
+      ["光影、留白与恰到好处的平衡", "ROOT", "quiet", "ink", "quiet"],
+      ["古老香方、呼吸与安静流动的时间", "ROAM", "shape", "heritage", "heritage"],
+      ["温度、碰撞与材料发生变化的瞬间", "ROAM", "shape", "fire", "material"],
+      ["泥土、形状与器物逐渐成形", "ROOT", "shape", "form", "earth"],
     ],
   },
   {
     title: "新的一岁，你最想相信哪句话？",
     directionWeight: 3,
     options: [
-      ["真正的成长，需要时间慢慢发生", "ROOT", "quiet", "living"],
-      ["我不必急着定义自己", "ROAM", "explore", "play"],
-      ["我的身体，会带我抵达更远的地方", "RISE", "brave", "align"],
-      ["我可以亲手重建自己的生活", "ROAM", "shape", "heritage"],
+      ["理解来处，也是在为未来留下新的可能", "ROOT", "repair", "repair", "repair"],
+      ["我不必急着定义自己", "ROAM", "explore", "play", "wonder"],
+      ["我的身体，会用自己的语言带我抵达更远的地方", "RISE", "express", "align", "poet"],
+      ["我可以亲手重建自己的生活", "ROAM", "shape", "fire", "material"],
     ],
   },
 ];
@@ -462,6 +462,7 @@ function renderQuestion() {
 function emptyScores() {
   return {
     direction: { ROOT: 0, ROAM: 0, RISE: 0 },
+    persona: { quiet: 0, repair: 0, earth: 0, heritage: 0, material: 0, wonder: 0, brave: 0, poet: 0 },
     motive: { quiet: 0, repair: 0, shape: 0, explore: 0, brave: 0, express: 0 },
     tag: {
       living: 0,
@@ -490,10 +491,11 @@ function calculateResult() {
     scores.direction[option[1]] += question.directionWeight || 2;
     scores.motive[option[2]] += 2;
     scores.tag[option[3]] += question.tagWeight || 1;
+    scores.persona[option[4]] += 1;
   });
 
-  const direction = highestKey(scores.direction);
-  const personalityKey = choosePersonality(direction, scores);
+  const personalityKey = choosePersonality(scores);
+  const direction = directionForPersonality(personalityKey);
   const recommendation = chooseRecommendation(direction, scores, personalityKey);
   return { direction, personalityKey, recommendation, scores };
 }
@@ -502,25 +504,20 @@ function highestKey(record, allowed = Object.keys(record)) {
   return allowed.reduce((best, key) => (record[key] > record[best] ? key : best), allowed[0]);
 }
 
-function choosePersonality(direction, scores) {
-  if (direction === "ROOT") {
-    if (scores.motive.repair >= scores.motive.quiet && scores.tag.repair >= 3) return "repair";
-    if (scores.motive.shape > scores.motive.quiet || scores.tag.form >= 3) return "earth";
-    return "quiet";
-  }
+function choosePersonality(scores) {
+  const highest = Math.max(...Object.values(scores.persona));
+  const tied = Object.keys(scores.persona).filter((key) => scores.persona[key] === highest);
+  if (tied.length === 1) return tied[0];
 
-  if (direction === "ROAM") {
-    const tag = highestKey(scores.tag, ["heritage", "fire", "build", "play"]);
-    if (scores.motive.explore >= scores.motive.shape) return "wonder";
-    if (tag === "heritage") return "heritage";
-    if (tag === "fire" || tag === "build") return "material";
-    return "wonder";
-  }
+  // A stable answer-based tie break avoids permanently favoring the first persona in the list.
+  const answerSignature = state.answers.reduce((hash, answer, index) => (hash * 31 + (answer + 1) * (index + 7)) >>> 0, 17);
+  return tied[answerSignature % tied.length];
+}
 
-  if (scores.motive.express >= scores.motive.brave || scores.tag.rhythm + scores.tag.align >= scores.tag.strike + scores.tag.power) {
-    return "poet";
-  }
-  return "brave";
+function directionForPersonality(personalityKey) {
+  if (["quiet", "repair", "earth"].includes(personalityKey)) return "ROOT";
+  if (["heritage", "material", "wonder"].includes(personalityKey)) return "ROAM";
+  return "RISE";
 }
 
 function chooseRecommendation(direction, scores, personalityKey) {
