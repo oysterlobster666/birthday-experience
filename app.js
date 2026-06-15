@@ -139,8 +139,20 @@ const recommendationPools = {
   earth: ["陶艺", "国画", "木工"],
   heritage: ["蓝染", "掐丝珐琅", "篆刻", "刺绣", "制香", "画唐卡"],
   material: ["吹玻璃", "金工／银饰", "木工", "皮具", "Tufting", "陶艺体验"],
+  wonder: ["拼豆", "蓝染", "Tufting", "刺绣", "吹玻璃", "金工／银饰", "掐丝珐琅", "制香", "木工", "皮具", "银饰", "篆刻"],
   brave: ["拳击", "健身"],
   poet: ["普拉提", "国标舞"],
+};
+
+const personaDirections = {
+  quiet: "ROOT",
+  repair: "ROOT",
+  earth: "ROOT",
+  heritage: "ROAM",
+  material: "ROAM",
+  wonder: "ROAM",
+  brave: "RISE",
+  poet: "RISE",
 };
 
 const wonderCombinations = {
@@ -496,7 +508,7 @@ function calculateResult() {
 
   const personalityKey = choosePersonality(scores);
   const direction = directionForPersonality(personalityKey);
-  const recommendation = chooseRecommendation(direction, scores, personalityKey);
+  const recommendation = bindRecommendationToPersonality(personalityKey, chooseRecommendation(direction, scores, personalityKey));
   return { direction, personalityKey, recommendation, scores };
 }
 
@@ -515,9 +527,7 @@ function choosePersonality(scores) {
 }
 
 function directionForPersonality(personalityKey) {
-  if (["quiet", "repair", "earth"].includes(personalityKey)) return "ROOT";
-  if (["heritage", "material", "wonder"].includes(personalityKey)) return "ROAM";
-  return "RISE";
+  return personaDirections[personalityKey];
 }
 
 function chooseRecommendation(direction, scores, personalityKey) {
@@ -601,6 +611,122 @@ function chooseRecommendation(direction, scores, personalityKey) {
     moreItems,
     itemLabel: "本次精选组合",
   };
+}
+
+function fallbackRecommendation(personalityKey) {
+  const fallbacks = {
+    quiet: {
+      type: "ranked",
+      title: "优先推荐：花道",
+      reason: "花道、香道与国画回应了你对季节、秩序和安静投入的需要，适合成为持续练习的入口。",
+      items: recommendationPools.quiet,
+      itemLabel: "推荐顺序",
+    },
+    repair: {
+      type: "ranked",
+      title: "优先推荐：古籍／文物修复",
+      reason: "这些技艺都需要耐心、理解与精细判断，也能让你在双手工作时与时间建立连接。",
+      items: recommendationPools.repair,
+      itemLabel: "适合继续讨论",
+    },
+    earth: {
+      type: "ranked",
+      title: "优先推荐：陶艺",
+      reason: "这些体验让你通过触摸、塑造与反复修正，把心中的形状慢慢带到现实里。",
+      items: recommendationPools.earth,
+      itemLabel: "适合继续讨论",
+    },
+    heritage: {
+      type: "schedule",
+      title: "传统纹样与手艺探索",
+      reason: "这些体验让你走近传统技艺的来处，也为你保留自由表达与重新创造的空间。",
+      items: recommendationPools.heritage.slice(0, 4),
+      moreItems: recommendationPools.heritage.slice(4),
+      itemLabel: "本次精选组合",
+    },
+    material: {
+      type: "schedule",
+      title: "材料转化与创造探索",
+      reason: "不同材料的质地、结构与变化，会持续回应你对亲手创造和即时反馈的好奇。",
+      items: recommendationPools.material.slice(0, 4),
+      moreItems: recommendationPools.material.slice(4),
+      itemLabel: "本次精选组合",
+    },
+    wonder: {
+      type: "schedule",
+      title: wonderCombinations.cross.title,
+      reason: "这组跨类别体验为你保留反差与未知，让你在轻盈尝试中发现真正想继续靠近的方向。",
+      items: wonderCombinations.cross.items,
+      itemLabel: "本次探索组合",
+    },
+    brave: {
+      type: "ranked",
+      title: "优先推荐：拳击",
+      reason: "清晰的目标、身体反馈与持续突破，会让你真实感受到自己的力量正在增长。",
+      items: recommendationPools.brave,
+      itemLabel: "推荐顺序",
+    },
+    poet: {
+      type: "ranked",
+      title: "优先推荐：普拉提",
+      reason: "呼吸、控制与节奏能够帮助你重新认识身体，并在动作中建立稳定与表达。",
+      items: recommendationPools.poet,
+      itemLabel: "推荐顺序",
+    },
+  };
+  return fallbacks[personalityKey];
+}
+
+function bindRecommendationToPersonality(personalityKey, recommendation) {
+  const allowed = new Set(recommendationPools[personalityKey]);
+  const recommendedItems = [...recommendation.items, ...(recommendation.moreItems || [])];
+  const invalidItems = recommendedItems.filter((item) => !allowed.has(item));
+
+  if (invalidItems.length === 0) return recommendation;
+
+  console.error(`Recommendation mismatch for ${personalityKey}:`, invalidItems);
+  return fallbackRecommendation(personalityKey);
+}
+
+function validateConfiguration() {
+  const errors = [];
+  const personaEntries = Object.fromEntries(Object.keys(personaDirections).map((key) => [key, 0]));
+
+  questions.forEach((question, questionIndex) => {
+    question.options.forEach((option, optionIndex) => {
+      const personalityKey = option[4];
+      if (!personaDirections[personalityKey]) {
+        errors.push(`Question ${questionIndex + 1}, option ${optionIndex + 1} has an unknown persona.`);
+        return;
+      }
+      personaEntries[personalityKey] += 1;
+      if (option[1] !== personaDirections[personalityKey]) {
+        errors.push(`Question ${questionIndex + 1}, option ${optionIndex + 1} has a direction mismatch.`);
+      }
+    });
+  });
+
+  Object.entries(personaEntries).forEach(([personalityKey, count]) => {
+    if (count !== 6) errors.push(`${personalityKey} has ${count} question entries instead of 6.`);
+    if (!recommendationPools[personalityKey]?.length) errors.push(`${personalityKey} has no activity pool.`);
+  });
+
+  Object.entries(wonderCombinations).forEach(([comboKey, combo]) => {
+    const invalid = combo.items.filter((item) => !recommendationPools.wonder.includes(item));
+    if (invalid.length) errors.push(`Wonder combination ${comboKey} contains unbound activities: ${invalid.join(", ")}`);
+  });
+
+  Object.entries(roamPersonaCombinations).forEach(([personalityKey, combinations]) => {
+    Object.entries(combinations).forEach(([comboKey, items]) => {
+      const invalid = items.filter((item) => !recommendationPools[personalityKey].includes(item));
+      if (invalid.length) errors.push(`${personalityKey} combination ${comboKey} contains unbound activities: ${invalid.join(", ")}`);
+    });
+  });
+
+  if (errors.length) {
+    console.error("Personality test configuration errors:", errors);
+  }
+  return errors;
 }
 
 function renderResult() {
@@ -1089,4 +1215,5 @@ app.addEventListener("click", (event) => {
   }
 });
 
+validateConfiguration();
 render();
